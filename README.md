@@ -5,6 +5,7 @@ Simple golang webview examples using local file.
 ## Dependence
  - golang environment
  - github.com/webview/webview
+ - github.com/PuerkitoBio/goquery
 
 
 ## Build
