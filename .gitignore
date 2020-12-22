@@ -1,0 +1,14 @@
+SimpleWebView
+SimpleWebView.app
+SimpleWebView.exe
+
+go.sum
+
+*.exe~
+*.dll
+*.so
+*.dylib
+
+**/bin
+**/*.log
+**/*.DS_Store
