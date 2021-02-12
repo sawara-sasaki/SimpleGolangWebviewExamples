@@ -21,6 +21,7 @@ for i in ${FILEARY[@]}; do
     echo 'data:image/png;base64,' > ${TMP_FILE}
     base64 ${i} >> ${TMP_FILE}
   fi
-  cat ${TMP_FILE} | awk '{printf $0}' > ${TARGET_FILE}
+  # base64url encode
+  cat ${TMP_FILE} | awk '{gsub("\\+", "-", $0);gsub("/", "_", $0);printf $0}' > ${TARGET_FILE}
 done
 rm ${TMP_FILE}
