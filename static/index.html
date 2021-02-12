@@ -3,30 +3,36 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
     <title>WebView Example</title>
-    <style type="text/css">
-html {
-  scroll-behavior: smooth;
-  text-align: center;
+    <style>
+.background {
+  background-image:url(https://avatars.githubusercontent.com/u/68995145?s=400&v=4);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  max-width: 100%;
+  max-height: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+li > a:visited,
+li > a {
+  color: #333;
 }
     </style>
   </head>
-  <body>
-    <h1>WebView Example</h1>
-    <form>
-      <label>rgb:</label>
-      <input id="red" type="number" max="255" min="0" value="0">
-      <input id="green" type="number" max="255" min="0" value="0">
-      <input id="blue" type="number" max="255" min="0" value="0">
-      <input id="button" type="button" name="button" value="Change" onClick="changeColor()">
-    </form>
-    <script>
-    var changeColor = function() {
-      var r = document.getElementById("red").value;
-      var g = document.getElementById("green").value;
-      var b = document.getElementById("blue").value;
-      document.body.style.backgroundColor = "rgba(".concat(r, ",", g, ",", b, ",1)");
-      response("rgba(".concat(r, ",", g, ",", b, ",1)"));
-    }
-    </script>
+  <body class="background">
+    <div>
+      <ul>
+        <li><a href="https://github.com/sawara-sasaki/SimpleJsonEditor" target="_brank">SimpleJsonEditor</a></li>
+        <li><a href="https://github.com/sawara-sasaki/SimpleContentSearcher" target="_brank">SimpleContentSearcher</a></li>
+        <li><a href="https://github.com/sawara-sasaki/SimpleGolangWebviewExamples" target="_brank">SimpleGolangWebviewExamples</a></li>
+      </ul>
+      <p>&nbsp;</p>
+    </div>
+    <div class="transport">
+      <ul>
+        <li><a href="https://github.com/">Github</a></li>
+      </ul>
+    </div>
   </body>
 </html>
