@@ -2,12 +2,12 @@ package main
 
 import (
 	"os"
-	"fmt"
-	"net/url"
-	"io/ioutil"
+	"net/http"
 	"path/filepath"
 	"github.com/webview/webview"
 )
+
+const port string = "8080"
 
 func main() {
 	exe, err := os.Executable()
@@ -15,21 +15,22 @@ func main() {
 		os.Exit(1)
 	}
 
+	go func() {
+		http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+			var path string
+			if len(r.URL.Path[1:]) == 0 {
+				path = filepath.Join(filepath.Dir(exe), "static", "index.html")
+			} else {
+				path = filepath.Join(filepath.Dir(exe), "static", r.URL.Path[1:])
+			}
+			http.ServeFile(w, r, path)
+		})
+		http.ListenAndServe(":" + port, nil)
+	}()
+
 	w := webview.New(true)
-	htmlFile := filepath.Join(filepath.Dir(exe), "static", "index.html")
-	resultFile := filepath.Join(filepath.Dir(exe), "result.txt")
 	w.SetTitle("WebView Example")
 	w.SetSize(800, 600, webview.HintNone)
-	bytes, _ := ioutil.ReadFile(htmlFile)
-	w.Bind("response", func(s string) {
-		w.Dispatch(func() {
-			err := ioutil.WriteFile(resultFile, []byte("[test001] " + s), 0666)
-			if err != nil {
-				fmt.Println(err)
-				os.Exit(1)
-			}
-		})
-	})
-	w.Navigate("data:text/html," + url.PathEscape(string(bytes)))
+	w.Navigate("http://localhost:" + port)
 	w.Run()
 }
