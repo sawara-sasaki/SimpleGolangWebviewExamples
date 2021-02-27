@@ -19,11 +19,13 @@ func main() {
 	}
 
 	w := webview.New(true)
-	htmlFile := "static/index.html"
 	resultFile := filepath.Join(filepath.Dir(exe), "result.txt")
 	w.SetTitle("WebView Example")
 	w.SetSize(800, 600, webview.HintNone)
-	bytes, _ := staticFS.ReadFile(htmlFile)
+	initFile := "static/init.js"
+	initBytes, _ := staticFS.ReadFile(initFile)
+	indexFile := "static/index.html"
+	indexBytes, _ := staticFS.ReadFile(indexFile)
 	w.Bind("response", func(s string) {
 		w.Dispatch(func() {
 			err := os.WriteFile(resultFile, []byte("[test001] " + s), 0666)
@@ -33,6 +35,7 @@ func main() {
 			}
 		})
 	})
-	w.Navigate("data:text/html," + url.PathEscape(string(bytes)))
+	w.Init(string(initBytes))
+	w.Navigate("data:text/html," + url.PathEscape(string(indexBytes)))
 	w.Run()
 }
