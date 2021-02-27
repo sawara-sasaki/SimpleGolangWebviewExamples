@@ -3,11 +3,14 @@ package main
 import (
 	"os"
 	"fmt"
+	"embed"
 	"net/url"
-	"io/ioutil"
 	"path/filepath"
 	"github.com/webview/webview"
 )
+
+//go:embed static
+var staticFS embed.FS
 
 func main() {
 	exe, err := os.Executable()
@@ -16,14 +19,14 @@ func main() {
 	}
 
 	w := webview.New(true)
-	htmlFile := filepath.Join(filepath.Dir(exe), "static", "index.html")
+	htmlFile := "static/index.html"
 	resultFile := filepath.Join(filepath.Dir(exe), "result.txt")
 	w.SetTitle("WebView Example")
 	w.SetSize(800, 600, webview.HintNone)
-	bytes, _ := ioutil.ReadFile(htmlFile)
+	bytes, _ := staticFS.ReadFile(htmlFile)
 	w.Bind("response", func(s string) {
 		w.Dispatch(func() {
-			err := ioutil.WriteFile(resultFile, []byte("[test001] " + s), 0666)
+			err := os.WriteFile(resultFile, []byte("[test001] " + s), 0666)
 			if err != nil {
 				fmt.Println(err)
 				os.Exit(1)
