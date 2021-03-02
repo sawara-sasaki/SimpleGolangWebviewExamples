@@ -2,6 +2,7 @@ package main
 
 import (
 	"os"
+	"fmt"
 	"time"
 	"embed"
 	"net/url"
@@ -42,13 +43,22 @@ func main() {
 		w.Dispatch(func() {
 			t := time.Now()
 			logFile.WriteString("[" + t.Format("2006/01/02 15:04:05") + "] " + s + "\n")
-			if err != nil {
-				os.Exit(1)
-			}
 		})
 	})
 	w.Bind("navigate", func(url string) {
 		w.Navigate(url)
+	})
+	w.Bind("local", func(html string) {
+		htmlFile := filepath.Join("static", html)
+		htmlBytes, err := staticFS.ReadFile(htmlFile)
+		if err != nil {
+			w.Dispatch(func() {
+				t := time.Now()
+				logFile.WriteString("[" + t.Format("2006/01/02 15:04:05") + "] " + fmt.Sprint(err) + "\n")
+			})
+		} else {
+			w.Navigate("data:text/html," + url.PathEscape(string(htmlBytes)))
+		}
 	})
 	w.Init(string(initBytes))
 	w.Navigate("data:text/html," + url.PathEscape(string(indexBytes)))
