@@ -41,8 +41,7 @@ func main() {
 	indexBytes, _ := staticFS.ReadFile(indexFile)
 	w.Bind("log", func(s string) {
 		w.Dispatch(func() {
-			t := time.Now()
-			logFile.WriteString("[" + t.Format("2006/01/02 15:04:05") + "] " + s + "\n")
+			write(logFile, s)
 		})
 	})
 	w.Bind("navigate", func(url string) {
@@ -53,8 +52,7 @@ func main() {
 		htmlBytes, err := staticFS.ReadFile(htmlFile)
 		if err != nil {
 			w.Dispatch(func() {
-				t := time.Now()
-				logFile.WriteString("[" + t.Format("2006/01/02 15:04:05") + "] " + fmt.Sprint(err) + "\n")
+				write(logFile, fmt.Sprint(err))
 			})
 		} else {
 			w.Navigate("data:text/html," + url.PathEscape(string(htmlBytes)))
@@ -63,4 +61,8 @@ func main() {
 	w.Init(string(initBytes))
 	w.Navigate("data:text/html," + url.PathEscape(string(indexBytes)))
 	w.Run()
+}
+
+func write(f *os.File, s string) {
+	f.WriteString("[" + time.Now().Format("2006/01/02 15:04:05") + "] " + s + "\n")
 }
