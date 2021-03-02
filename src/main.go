@@ -47,6 +47,9 @@ func main() {
 			}
 		})
 	})
+	w.Bind("navigate", func(url string) {
+		w.Navigate(url)
+	})
 	w.Init(string(initBytes))
 	w.Navigate("data:text/html," + url.PathEscape(string(indexBytes)))
 	w.Run()
