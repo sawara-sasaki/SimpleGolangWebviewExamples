@@ -22,7 +22,7 @@ func main() {
 	t := time.Now()
 	os.Mkdir(filepath.Join(filepath.Dir(exe), "log"), 0777)
 	logFilePath := filepath.Join(filepath.Dir(exe), "log", t.Format("20060102") + ".log")
-	logFile, err := os.OpenFile(logFilePath, os.O_CREATE|os.O_WRONLY, 0666)
+	logFile, err := os.OpenFile(logFilePath, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
 	if err != nil {
 		os.Exit(1)
 	}

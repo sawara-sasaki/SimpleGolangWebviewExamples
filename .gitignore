@@ -3,7 +3,6 @@ SimpleWebView.app
 SimpleWebView.exe
 
 go.sum
-result.txt
 
 *.exe~
 *.dll
