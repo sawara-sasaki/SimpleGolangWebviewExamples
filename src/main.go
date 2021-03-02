@@ -2,7 +2,7 @@ package main
 
 import (
 	"os"
-	"fmt"
+	"time"
 	"embed"
 	"net/url"
 	"path/filepath"
@@ -18,19 +18,31 @@ func main() {
 		os.Exit(1)
 	}
 
+	// Log Setting
+	t := time.Now()
+	os.Mkdir(filepath.Join(filepath.Dir(exe), "log"), 0777)
+	logFilePath := filepath.Join(filepath.Dir(exe), "log", t.Format("20060102") + ".log")
+	logFile, err := os.OpenFile(logFilePath, os.O_CREATE|os.O_WRONLY, 0666)
+	if err != nil {
+		os.Exit(1)
+	}
+	defer func() {
+		logFile.Close()
+	}()
+
+	// Webview Setting
 	w := webview.New(true)
-	resultFile := filepath.Join(filepath.Dir(exe), "result.txt")
 	w.SetTitle("WebView Example")
 	w.SetSize(800, 600, webview.HintNone)
-	initFile := "static/init.js"
+	initFile := filepath.Join("static", "init.js")
 	initBytes, _ := staticFS.ReadFile(initFile)
-	indexFile := "static/index.html"
+	indexFile := filepath.Join("static", "index.html")
 	indexBytes, _ := staticFS.ReadFile(indexFile)
-	w.Bind("response", func(s string) {
+	w.Bind("log", func(s string) {
 		w.Dispatch(func() {
-			err := os.WriteFile(resultFile, []byte("[test001] " + s), 0666)
+			t := time.Now()
+			logFile.WriteString("[" + t.Format("2006/01/02 15:04:05") + "] " + s + "\n")
 			if err != nil {
-				fmt.Println(err)
 				os.Exit(1)
 			}
 		})
