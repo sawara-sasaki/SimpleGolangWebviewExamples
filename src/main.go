@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"time"
 	"embed"
+	"regexp"
+	"strings"
 	"net/url"
 	"path/filepath"
 	"github.com/webview/webview"
@@ -48,9 +50,11 @@ func main() {
 	if err != nil {
 		os.Exit(1)
 	}
+
+	// Webview Bind
 	w.Bind("log", func(s string) {
 		w.Dispatch(func() {
-			write(logFile, "[" + time.Now().Format("2006/01/02 15:04:05") + "] " + s + "\n")
+			writeLog(logFile, s)
 		})
 	})
 	w.Bind("navigate", func(url string) {
@@ -61,7 +65,7 @@ func main() {
 		htmlBytes, err := staticFS.ReadFile(htmlFilePath)
 		if err != nil {
 			w.Dispatch(func() {
-				write(logFile, "[" + time.Now().Format("2006/01/02 15:04:05") + "] " + fmt.Sprint(err) + "\n")
+				writeLog(logFile, fmt.Sprint(err))
 			})
 		} else {
 			w.Navigate("data:text/html," + url.PathEscape(string(htmlBytes)))
@@ -75,17 +79,36 @@ func main() {
 	w.Bind("read", func()(string) {
 		memoBytes, err := os.ReadFile(memoFilePath)
 		if err != nil {
-			write(logFile, "[" + time.Now().Format("2006/01/02 15:04:05") + "] " + fmt.Sprint(err) + "\n")
+			writeLog(logFile, fmt.Sprint(err))
 			return ""
 		} else {
 			return string(memoBytes)
 		}
 	})
+	w.Bind("debug", func() {
+		w.Dispatch(func() {
+			logBytes, err := os.ReadFile(logFilePath)
+			if err != nil {
+				writeLog(logFile, fmt.Sprint(err))
+			} else {
+				for _, v := range regexp.MustCompile("[\n]").Split(string(logBytes), -1) {
+					v_ := strings.TrimSpace(v)
+					if len(v_) > 0 {
+						w.Eval("console.log('" + v_ + "');")
+					}
+				}
+			}
+		})
+	})
+
+	// Webview Bind
 	w.Init(string(initBytes))
+
+	// Webview Navigate
 	w.Navigate("data:text/html," + url.PathEscape(string(indexBytes)))
 	w.Run()
 }
 
-func write(f *os.File, s string) {
-	f.WriteString(s)
+func writeLog(f *os.File, s string) {
+	f.WriteString("[" + time.Now().Format("2006/01/02 15:04:05") + "] " + s + "\n")
 }

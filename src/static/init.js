@@ -4,7 +4,7 @@ window.onload = function() {
       if (event.key === 'c' && event.ctrlKey) {
         log("Ctrl+C");
       } else if (event.key === 'v' && event.ctrlKey) {
-        log("Ctrl+V");
+        debug();
       }
     });
 };
