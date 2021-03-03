@@ -1,3 +1,4 @@
+{{define "base"}}
 <html>
   <head>
     <meta charset="utf-8">
@@ -7,6 +8,14 @@
 html {
   scroll-behavior: smooth;
   text-align: center;
+}
+body {
+  background-image:url('{{template "sample.jpg" .}}');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  max-width: 100%;
+  max-height: 100%;
 }
 #main {
   width: 100vw;
@@ -75,7 +84,7 @@ html {
           <div class="memo-button" onclick="load();">Load</div>
         </div>
         <div id="link-buttons">
-          <div class="memo-button" onclick="local('index.html');">Top</div>
+          <div class="memo-button" onclick="local('index.tpl');">Top</div>
         </div>
       </div>
     </div>
@@ -91,3 +100,4 @@ html {
     </script>
   </body>
 </html>
+{{end}}

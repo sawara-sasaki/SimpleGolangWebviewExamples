@@ -4,10 +4,12 @@ import (
 	"os"
 	"fmt"
 	"time"
+	"bytes"
 	"embed"
 	"regexp"
 	"strings"
 	"net/url"
+	"html/template"
 	"path/filepath"
 	"github.com/webview/webview"
 )
@@ -45,11 +47,6 @@ func main() {
 	if err != nil {
 		os.Exit(1)
 	}
-	indexFilePath := filepath.Join("static", "index.html")
-	indexBytes, err := staticFS.ReadFile(indexFilePath)
-	if err != nil {
-		os.Exit(1)
-	}
 
 	// Webview Bind
 	w.Bind("log", func(s string) {
@@ -60,16 +57,8 @@ func main() {
 	w.Bind("navigate", func(url string) {
 		w.Navigate(url)
 	})
-	w.Bind("local", func(html string) {
-		htmlFilePath := filepath.Join("static", html)
-		htmlBytes, err := staticFS.ReadFile(htmlFilePath)
-		if err != nil {
-			w.Dispatch(func() {
-				writeLog(logFile, fmt.Sprint(err))
-			})
-		} else {
-			w.Navigate("data:text/html," + url.PathEscape(string(htmlBytes)))
-		}
+	w.Bind("local", func(tpl string) {
+		w.Navigate(getHtmlString(filepath.Join("static", tpl)))
 	})
 	w.Bind("write", func(s string) {
 		w.Dispatch(func() {
@@ -105,10 +94,23 @@ func main() {
 	w.Init(string(initBytes))
 
 	// Webview Navigate
-	w.Navigate("data:text/html," + url.PathEscape(string(indexBytes)))
+	w.Navigate(getHtmlString(filepath.Join("static", "index.tpl")))
 	w.Run()
 }
 
 func writeLog(f *os.File, s string) {
 	f.WriteString("[" + time.Now().Format("2006/01/02 15:04:05") + "] " + s + "\n")
+}
+
+func getHtmlString(templateFilePath string) string {
+	tmp := template.New("tmp")
+	var buf bytes.Buffer
+	funcMap := template.FuncMap{
+		"safehtml": func(text string) template.HTML { return template.HTML(text) },
+	}
+	tmp = template.Must(template.New("").Funcs(funcMap).ParseFS(staticFS, templateFilePath, filepath.Join("static", "view.tpl")))
+	if err := tmp.ExecuteTemplate(&buf, "base", nil); err != nil {
+		os.Exit(1)
+	}
+	return "data:text/html," + url.PathEscape(buf.String())
 }

@@ -1,3 +1,4 @@
+{{define "base"}}
 <html>
   <head>
     <meta charset="utf-8">
@@ -100,8 +101,8 @@ label {
       </form>
       <div id="buttons">
         <a href="https://github.com/"><div class="link-button">G</div></a>
-        <a href="#" onclick="local('memo.html');"><div class="link-button">M</div></a>
-        <a href="#" onclick="local('links.html');"><div class="link-button">L</div></a>
+        <a href="#" onclick="local('memo.tpl');"><div class="link-button">M</div></a>
+        <a href="#" onclick="local('links.tpl');"><div class="link-button">L</div></a>
       </div>
     </div>
     <div id="setting-open-button-container">
@@ -137,3 +138,4 @@ label {
     </script>
   </body>
 </html>
+{{end}}

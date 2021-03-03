@@ -1,3 +1,4 @@
+{{define "base"}}
 <html>
   <head>
     <meta charset="utf-8">
@@ -8,6 +9,10 @@ html {
   scroll-behavior: smooth;
 }
 body {
+  background-image:url('{{template "sample.jpg" .}}');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   max-width: 100%;
   max-height: 100%;
   display: flex;
@@ -38,8 +43,9 @@ a:visited {
     </div>
     <div>
       <ul>
-        <li><a href="#" onclick="local('index.html');">Top</a></li>
+        <li><a href="#" onclick="local('index.tpl');">Top</a></li>
       </ul>
     </div>
   </body>
 </html>
+{{end}}
