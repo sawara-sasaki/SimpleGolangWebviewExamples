@@ -34,20 +34,8 @@ label {
   justify-content: center;
 }
 #url-input {
-  width: calc(100% - 7em);
-  margin: 0 1em;
-}
-#url-button {
-  width: 5em;
+  width: 100%;
   margin: 0;
-  cursor: pointer;
-  border: solid;
-  border-radius: 3px;
-  border-color: #777;
-  border-width: thin;
-  background-color: #F0F0F0;
-  text-align: center;
-  line-height: 30px;
 }
 #buttons {
   width: 200px;
@@ -109,7 +97,6 @@ label {
       <h1>WebView Example</h1>
       <form id="url-form">
         <input id="url-input" type="text">
-        <div id="url-button" onclick="urlHandle();">Go</div>
       </form>
       <div id="buttons">
         <a href="https://github.com/"><div class="link-button">G</div></a>
@@ -130,16 +117,16 @@ label {
       </form>
     </div>
     <script>
+    const urlForm = document.getElementById("url-form");
+    urlForm.addEventListener("submit", function() {
+      navigate(document.getElementById("url-input").value);
+    })
     var changeColor = function() {
       var r = document.getElementById("red").value;
       var g = document.getElementById("green").value;
       var b = document.getElementById("blue").value;
       document.body.style.backgroundColor = "rgba(".concat(r, ",", g, ",", b, ",1)");
       log("rgba(".concat(r, ",", g, ",", b, ",1)"));
-    };
-    var urlHandle = function() {
-      var urlInput = document.getElementById("url-input");
-      navigate(urlInput.value);
     };
     var settingOpen = function() {
       var settingOpenButtonContainerElem = document.getElementById("setting-open-button-container");
