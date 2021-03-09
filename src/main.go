@@ -40,6 +40,7 @@ func main() {
 
 	// Webview Setting
 	w := webview.New(true)
+	defer w.Destroy()
 	w.SetTitle("WebView Example")
 	w.SetSize(800, 600, webview.HintNone)
 	initFilePath := filepath.Join("static", "init.js")
@@ -90,7 +91,7 @@ func main() {
 		})
 	})
 
-	// Webview Bind
+	// Webview Init
 	w.Init(string(initBytes))
 
 	// Webview Navigate

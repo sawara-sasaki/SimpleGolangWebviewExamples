@@ -4,7 +4,7 @@ root	:=		$(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 
 clean:
 	rm -f SimpleWebView
-	rm -f SimpleWebView.app
+	rm -r SimpleWebView.app
 	rm -f SimpleWebView.exe
 
 build-linux:
@@ -17,4 +17,4 @@ build-mac:
 
 build-win:
 	scripts/create_template.sh
-	cd src && GOOS=windows GOARCH=amd64 go build -ldflags="-s -w" -o ${root}/SimpleWebView.exe
+	cd src && GOOS=windows GOARCH=amd64 CGO_ENABLED=1 CC=x86_64-w64-mingw32-gcc go build -ldflags="-s -w -H windowsgui" -o ${root}/SimpleWebView.exe
