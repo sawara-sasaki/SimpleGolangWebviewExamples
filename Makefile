@@ -4,7 +4,7 @@ root	:=		$(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 
 clean:
 	rm -f SimpleWebView
-	rm -r SimpleWebView.app
+	rm -f SimpleWebView.app
 	rm -f SimpleWebView.exe
 
 build-linux:
