@@ -43,11 +43,6 @@ func main() {
 	defer w.Destroy()
 	w.SetTitle("WebView Example")
 	w.SetSize(800, 600, webview.HintNone)
-	initFilePath := filepath.Join("static", "init.js")
-	initBytes, err := staticFS.ReadFile(initFilePath)
-	if err != nil {
-		os.Exit(1)
-	}
 
 	// Webview Bind
 	w.Bind("log", func(s string) {
@@ -92,6 +87,11 @@ func main() {
 	})
 
 	// Webview Init
+	initFilePath := filepath.Join("static", "init.js")
+	initBytes, err := staticFS.ReadFile(initFilePath)
+	if err != nil {
+		os.Exit(1)
+	}
 	w.Init(string(initBytes))
 
 	// Webview Navigate
