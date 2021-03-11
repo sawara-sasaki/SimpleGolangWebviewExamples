@@ -3,9 +3,7 @@ root	:=		$(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 .PHONY: clean build-linux build-mac build-win
 
 clean:
-	rm -f SimpleWebView
-	rm -f SimpleWebView.app
-	rm -f SimpleWebView.exe
+	rm -f SimpleWebView*
 
 build-linux:
 	scripts/create_template.sh

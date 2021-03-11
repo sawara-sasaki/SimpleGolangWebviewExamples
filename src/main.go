@@ -109,7 +109,7 @@ func getHtmlString(templateFilePath string) string {
 	funcMap := template.FuncMap{
 		"safehtml": func(text string) template.HTML { return template.HTML(text) },
 	}
-	tmp = template.Must(template.New("").Funcs(funcMap).ParseFS(staticFS, templateFilePath, filepath.Join("static", "view.tpl")))
+	tmp = template.Must(template.New("").Funcs(funcMap).ParseFS(staticFS, templateFilePath, filepath.Join("static", "css.tpl"), filepath.Join("static", "img.tpl")))
 	if err := tmp.ExecuteTemplate(&buf, "base", nil); err != nil {
 		os.Exit(1)
 	}

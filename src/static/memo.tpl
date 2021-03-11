@@ -5,18 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
     <title>WebView Example</title>
     <style type="text/css">
-html {
-  scroll-behavior: smooth;
-  text-align: center;
-}
-body {
-  background-image:url('{{template "sample.jpg" .}}');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  max-width: 100%;
-  max-height: 100%;
-}
+{{template "background.css" .}}
 #main {
   width: 100vw;
   height: 100vh;
