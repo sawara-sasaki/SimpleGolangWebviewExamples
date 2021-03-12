@@ -14,6 +14,15 @@ import (
 	"github.com/webview/webview"
 )
 
+type TemplateData struct {
+	Links []LinkData `json:"links"`
+}
+
+type LinkData struct {
+	Title string `json:"title"`
+	Url   string `json:"url"`
+}
+
 //go:embed static
 var staticFS embed.FS
 
@@ -38,6 +47,21 @@ func main() {
 	// Memo Setting
 	memoFilePath := filepath.Join(filepath.Dir(exe), "log", "memo.log")
 
+	// Template Data Setting
+	var linkDataList []LinkData
+	dataBytes, err := staticFS.ReadFile(filepath.Join("static", "data.txt"))
+	if err != nil {
+		writeLog(logFile, fmt.Sprint(err))
+		os.Exit(1)
+	}
+	for _, w := range regexp.MustCompile("[\n]").Split(string(dataBytes), -1) {
+		x := regexp.MustCompile("[ ]").Split(w, -1)
+		if len(x) > 1 {
+			linkDataList = append(linkDataList, LinkData{Title: x[0], Url: x[1]})
+		}
+	}
+	templateData := TemplateData{Links: linkDataList}
+
 	// Webview Setting
 	w := webview.New(true)
 	defer w.Destroy()
@@ -54,7 +78,7 @@ func main() {
 		w.Navigate(url)
 	})
 	w.Bind("local", func(tpl string) {
-		w.Navigate(getHtmlString(filepath.Join("static", tpl)))
+		w.Navigate(getHtmlString(filepath.Join("static", tpl), templateData))
 	})
 	w.Bind("write", func(s string) {
 		w.Dispatch(func() {
@@ -95,7 +119,7 @@ func main() {
 	w.Init(string(initBytes))
 
 	// Webview Navigate
-	w.Navigate(getHtmlString(filepath.Join("static", "index.tpl")))
+	w.Navigate(getHtmlString(filepath.Join("static", "index.tpl"), templateData))
 	w.Run()
 }
 
@@ -103,14 +127,14 @@ func writeLog(f *os.File, s string) {
 	f.WriteString("[" + time.Now().Format("2006/01/02 15:04:05") + "] " + s + "\n")
 }
 
-func getHtmlString(templateFilePath string) string {
+func getHtmlString(templateFilePath string, data TemplateData) string {
 	tmp := template.New("tmp")
 	var buf bytes.Buffer
 	funcMap := template.FuncMap{
 		"safehtml": func(text string) template.HTML { return template.HTML(text) },
 	}
 	tmp = template.Must(template.New("").Funcs(funcMap).ParseFS(staticFS, templateFilePath, filepath.Join("static", "css.tpl"), filepath.Join("static", "img.tpl")))
-	if err := tmp.ExecuteTemplate(&buf, "base", nil); err != nil {
+	if err := tmp.ExecuteTemplate(&buf, "base", data); err != nil {
 		os.Exit(1)
 	}
 	return "data:text/html," + url.PathEscape(buf.String())

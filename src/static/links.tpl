@@ -29,8 +29,9 @@ a:visited {
   <body>
     <div>
       <ul>
-        <li><a href="https://github.com/">GitHub</a></li>
-        <li><a href="https://github.com/webview/webview">webview</a></li>
+{{ range .Links }}
+        <li><a href="{{ .Url }}">{{ .Title }}</a></li>
+{{end}}
       </ul>
     </div>
     <div>
