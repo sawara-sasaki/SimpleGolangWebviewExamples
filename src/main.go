@@ -49,13 +49,13 @@ func main() {
 
 	// Template Data Setting
 	var linkDataList []LinkData
-	dataBytes, err := staticFS.ReadFile(filepath.Join("static", "data.txt"))
+	dataBytes, err := staticFS.ReadFile(filepath.Join("static", "data.csv"))
 	if err != nil {
 		writeLog(logFile, fmt.Sprint(err))
 		os.Exit(1)
 	}
 	for _, w := range regexp.MustCompile("[\n]").Split(string(dataBytes), -1) {
-		x := regexp.MustCompile("[ ]").Split(w, -1)
+		x := regexp.MustCompile("[,]").Split(w, -1)
 		if len(x) > 1 {
 			linkDataList = append(linkDataList, LinkData{Title: x[0], Url: x[1]})
 		}

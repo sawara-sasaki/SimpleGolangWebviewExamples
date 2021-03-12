@@ -1,2 +1,0 @@
-GitHub https://github.com/
-webview https://github.com/webview/webview
