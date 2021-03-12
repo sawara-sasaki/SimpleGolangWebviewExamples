@@ -1,7 +1,6 @@
 {{define "background.css"}}
 html {
   scroll-behavior: smooth;
-  text-align: center;
 }
 body {
   background-image:url('{{template "sample.jpg" .}}');
