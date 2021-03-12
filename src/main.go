@@ -109,6 +109,12 @@ func main() {
 			}
 		})
 	})
+	w.Bind("src", func(url string, src string) {
+		w.Dispatch(func() {
+			srcFilePath := filepath.Join(filepath.Dir(exe), "log", "source_" + getDomain(url) + "_" + time.Now().Format("20060102150405") + ".log")
+			os.WriteFile(srcFilePath, []byte(src), os.ModePerm)
+		})
+	})
 
 	// Webview Init
 	initFilePath := filepath.Join("static", "init.js")
@@ -138,4 +144,12 @@ func getHtmlString(templateFilePath string, data TemplateData) string {
 		os.Exit(1)
 	}
 	return "data:text/html," + url.PathEscape(buf.String())
+}
+
+func getDomain(url string) string {
+	w := regexp.MustCompile("[/]").Split(url, -1)
+	if len(url) < 2 {
+		return ""
+	}
+	return w[2]
 }
