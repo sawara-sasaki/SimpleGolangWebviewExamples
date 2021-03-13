@@ -109,10 +109,16 @@ func main() {
 			}
 		})
 	})
-	w.Bind("src", func(url string, src string) {
+	w.Bind("saveSource", func(url string, source string) {
 		w.Dispatch(func() {
-			srcFilePath := filepath.Join(filepath.Dir(exe), "log", "source_" + getDomain(url) + "_" + time.Now().Format("20060102150405") + ".log")
-			os.WriteFile(srcFilePath, []byte(src), os.ModePerm)
+			sourceFilePath := filepath.Join(filepath.Dir(exe), "log", "source_" + getDomain(url) + "_" + time.Now().Format("20060102150405") + ".log")
+			os.WriteFile(sourceFilePath, []byte(source), os.ModePerm)
+		})
+	})
+	w.Bind("saveCookie", func(url string, cookie string) {
+		w.Dispatch(func() {
+			cookieFilePath := filepath.Join(filepath.Dir(exe), "log", "cookie_" + getDomain(url) + "_" + time.Now().Format("20060102150405") + ".log")
+			os.WriteFile(cookieFilePath, []byte(cookie), os.ModePerm)
 		})
 	})
 
