@@ -24,6 +24,10 @@ a:link,
 a:visited {
   color: #1A73F0;
 }
+span {
+  color: #1A73F0;
+  cursor: pointer;
+}
     </style>
   </head>
   <body>
@@ -36,9 +40,14 @@ a:visited {
     </div>
     <div>
       <ul>
-        <li><a href="#" onclick="local('index.tpl');">Top</a></li>
+        <li><span id="top">Top</span></li>
       </ul>
     </div>
+    <script>
+    document.getElementById("top").addEventListener("click", function() {
+      local('index.tpl');
+    });
+    </script>
   </body>
 </html>
 {{end}}
