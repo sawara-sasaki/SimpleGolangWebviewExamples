@@ -1,19 +1,19 @@
+var simpleGolangWebview = {};
+simpleGolangWebview.isLocal = window.location.href.startsWith('data');
 window.onload = function() {
-  var isLocal = window.location.href.startsWith('data');
-  var elements = document.getElementsByTagName('a');
-  Array.prototype.forEach.call(elements, function(element) {
-    element.setAttribute('target', '');
-  });
+  if (!simpleGolangWebview.isLocal) {
+    Array.prototype.forEach.call(document.getElementsByTagName('a'), (element) => element.setAttribute('target', ''));
+  }
   document.body.addEventListener('keydown',
     event => {
       if (event.key === 'c' && event.ctrlKey) {
-        if (!isLocal) {
+        if (!simpleGolangWebview.isLocal) {
           saveCookie(window.location.href, document.cookie);
         }
       } else if (event.key === 'v' && event.ctrlKey) {
         debug();
       } else if (event.key === 's' && event.ctrlKey) {
-        if (!isLocal) {
+        if (!simpleGolangWebview.isLocal) {
           saveSource(window.location.href, document.documentElement.innerHTML);
         }
       }
