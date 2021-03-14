@@ -18,4 +18,14 @@ window.onload = function() {
         }
       }
     });
+  document.body.addEventListener('click',
+    event => {
+      if (event.target.tagName === 'A') {
+        if ((!!event.target.download && event.target.download.length > 0) ||
+            (!!event.target.dataset.gaClick && event.target.dataset.gaClick.startsWith('Repository, download zip'))){
+          download(event.target.href);
+          return false;
+        }
+      }
+    }, {passive: false} );
 };
