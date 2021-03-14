@@ -69,23 +69,26 @@
       </form>
       <div id="buttons">
         <div id="file-buttons">
-          <div class="memo-button" onclick="save();">Save</div>
-          <div class="memo-button" onclick="load();">Load</div>
+          <div id="save" class="memo-button">Save</div>
+          <div id="load" class="memo-button">Load</div>
         </div>
         <div id="link-buttons">
-          <div class="memo-button" onclick="local('index.tpl');">Top</div>
+          <div id="top" class="memo-button">Top</div>
         </div>
       </div>
     </div>
     <script>
-    var save = function() {
+    document.getElementById("save").addEventListener("click", function() {
       write(document.getElementById("memo-textarea").value);
-    };
-    var load = function() {
+    });
+    document.getElementById("load").addEventListener("click", function() {
       read().then(function(res) {
         document.getElementById("memo-textarea").value = res;
       });
-    };
+    });
+    document.getElementById("top").addEventListener("click", function() {
+      local('index.tpl');
+    });
     </script>
   </body>
 </html>

@@ -16,12 +16,12 @@
       </form>
       <div id="buttons">
         <a href="https://github.com/"><div class="link-button">G</div></a>
-        <a href="#" onclick="local('memo.tpl');"><div class="link-button">M</div></a>
-        <a href="#" onclick="local('links.tpl');"><div class="link-button">L</div></a>
+        <span><div id="memo" class="link-button">M</div></span>
+        <span><div id="links" class="link-button">L</div></span>
       </div>
     </div>
     <div id="setting-open-button-container">
-      <div id="setting-open-button" onclick="settingOpen();">Setting</div>
+      <div id="setting-open-button">Setting</div>
     </div>
     <div id="setting">
       <form id="setting-form">
@@ -29,7 +29,7 @@
         <input id="red" type="number" max="255" min="0" value="0">
         <input id="green" type="number" max="255" min="0" value="0">
         <input id="blue" type="number" max="255" min="0" value="0">
-        <div id="change-color-button" onclick="changeColor();">Change</div>
+        <div id="change-color-button">Change</div>
       </form>
     </div>
     <script>
@@ -37,19 +37,25 @@
     urlForm.addEventListener("submit", function() {
       navigate(document.getElementById("url-input").value);
     })
-    var changeColor = function() {
+    document.getElementById("change-color-button").addEventListener("click", function() {
       var r = document.getElementById("red").value;
       var g = document.getElementById("green").value;
       var b = document.getElementById("blue").value;
       document.body.style.backgroundColor = "rgba(".concat(r, ",", g, ",", b, ",1)");
       log("rgba(".concat(r, ",", g, ",", b, ",1)"));
-    };
-    var settingOpen = function() {
+    });
+    document.getElementById("setting-open-button").addEventListener("click", function() {
       var settingOpenButtonContainerElem = document.getElementById("setting-open-button-container");
       settingOpenButtonContainerElem.style.display = "none";
       var settingElem = document.getElementById("setting");
       settingElem.style.display = "block";
-    };
+    });
+    document.getElementById("memo").addEventListener("click", function() {
+      local('memo.tpl');
+    });
+    document.getElementById("links").addEventListener("click", function() {
+      local('links.tpl');
+    });
     </script>
   </body>
 </html>
