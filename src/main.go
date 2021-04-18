@@ -56,6 +56,9 @@ func main() {
 	// Memo Setting
 	memoFilePath := filepath.Join(filepath.Dir(exe), "log", "memo.log")
 
+	// Bookmark Setting
+	bookmarkFilePath := filepath.Join(filepath.Dir(exe), "log", "bookmark.log")
+
 	// Template Data Setting
 	var linkDataList []LinkData
 	dataBytes, err := staticFS.ReadFile(filepath.Join("static", "data.csv"))
@@ -138,6 +141,36 @@ func main() {
 			if err != nil {
 				writeLog("< Download Fail > " + url)
 				writeLog("< Error > " + fmt.Sprint(err))
+			}
+		}()
+	})
+	w.Bind("onAddBookmark", func(url string) {
+		go func() {
+			bookmarkFile, err := os.OpenFile(bookmarkFilePath, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
+			if err != nil {
+				os.Exit(1)
+			}
+			defer func() {
+				bookmarkFile.Close()
+			}()
+			bookmarkFile.WriteString(url + "\n")
+		}()
+	})
+	w.Bind("onShowBookmark", func() {
+		go func() {
+			bookmarkBytes, err := os.ReadFile(bookmarkFilePath)
+			if err != nil {
+				writeLog("< Error > " + fmt.Sprint(err))
+			} else {
+				var bookmarkDataList []LinkData
+				for _, v := range regexp.MustCompile("[\n]").Split(string(bookmarkBytes), -1) {
+					v_ := strings.TrimSpace(v)
+					if len(v_) > 0 {
+						bookmarkDataList = append(bookmarkDataList, LinkData{Title: v_, Url: v_})
+					}
+				}
+				templateData := TemplateData{Links: bookmarkDataList}
+				w.Navigate(getHtmlString(filepath.Join("static", "links.tpl"), templateData))
 			}
 		}()
 	})
