@@ -99,3 +99,8 @@ label {
   line-height: 20px;
 }
 {{end}}
+{{define "scrollbar.css"}}
+::-webkit-scrollbar {
+  display: none;
+}
+{{end}}
