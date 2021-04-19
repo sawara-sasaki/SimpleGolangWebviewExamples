@@ -33,31 +33,6 @@
         <div id="change-color-button">Change</div>
       </form>
     </div>
-    <script>
-    const urlForm = document.getElementById("url-form");
-    urlForm.addEventListener("submit", function() {
-      navigate(document.getElementById("url-input").value);
-    })
-    document.getElementById("change-color-button").addEventListener("click", function() {
-      var r = document.getElementById("red").value;
-      var g = document.getElementById("green").value;
-      var b = document.getElementById("blue").value;
-      document.body.style.backgroundColor = "rgba(".concat(r, ",", g, ",", b, ",1)");
-      log("rgba(".concat(r, ",", g, ",", b, ",1)"));
-    });
-    document.getElementById("setting-open-button").addEventListener("click", function() {
-      var settingOpenButtonContainerElem = document.getElementById("setting-open-button-container");
-      settingOpenButtonContainerElem.style.display = "none";
-      var settingElem = document.getElementById("setting");
-      settingElem.style.display = "block";
-    });
-    document.getElementById("memo").addEventListener("click", function() {
-      local('memo.tpl');
-    });
-    document.getElementById("links").addEventListener("click", function() {
-      local('links.tpl');
-    });
-    </script>
   </body>
 </html>
 {{end}}

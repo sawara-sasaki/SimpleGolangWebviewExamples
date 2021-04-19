@@ -78,19 +78,6 @@
         </div>
       </div>
     </div>
-    <script>
-    document.getElementById("save").addEventListener("click", function() {
-      write(document.getElementById("memo-textarea").value);
-    });
-    document.getElementById("load").addEventListener("click", function() {
-      read().then(function(res) {
-        document.getElementById("memo-textarea").value = res;
-      });
-    });
-    document.getElementById("top").addEventListener("click", function() {
-      local('index.tpl');
-    });
-    </script>
   </body>
 </html>
 {{end}}

@@ -44,11 +44,6 @@ span {
         <li><span id="top">Top</span></li>
       </ul>
     </div>
-    <script>
-    document.getElementById("top").addEventListener("click", function() {
-      local('index.tpl');
-    });
-    </script>
   </body>
 </html>
 {{end}}
