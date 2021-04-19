@@ -7,6 +7,7 @@
     <title>WebView Example</title>
     <style type="text/css">
 {{template "main.css" .}}
+{{template "scrollbar.css" .}}
     </style>
   </head>
   <body>
