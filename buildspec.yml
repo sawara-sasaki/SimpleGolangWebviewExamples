@@ -7,7 +7,7 @@ phases:
   pre_build:
     commands:
       - go mod tidy
-      - /bin/sh scripts/create_template.sh
+      - /bin/bash scripts/create_template.sh
   build:
     commands:
       - echo Build started on `date`
