@@ -8,6 +8,8 @@ phases:
     commands:
       - go mod tidy
       - /bin/bash scripts/create_template.sh
+      - apt install libgtk-3-dev
+      - apt install libwebkit2gtk-4.0-dev
   build:
     commands:
       - echo Build started on `date`
