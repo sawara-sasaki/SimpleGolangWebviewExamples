@@ -1,0 +1,23 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      golang: 1.18
+  pre_build:
+    commands:
+      - go mod tidy
+      - /bin/sh scripts/create_template.sh
+  build:
+    commands:
+      - echo Build started on `date`
+      - cd src
+      - GOOS=linux
+      - GOARCH=amd64
+      - go build -ldflags="-s -w" -o `pwd`/../SimpleWebView
+  post_build:
+    commands:
+      - echo Build completed on `date`
+artifacts:
+  files:
+    - SimpleWebView
