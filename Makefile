@@ -1,9 +1,12 @@
 root	:=		$(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 
-.PHONY: clean build-linux build-mac build-win
+.PHONY: clean tidy build-linux build-mac build-win
 
 clean:
 	rm -f SimpleWebView*
+
+tidy:
+	go mod tidy
 
 build-linux:
 	scripts/create_template.sh

@@ -10,9 +10,9 @@ Simple golang webview examples using local file.
 ## Build
 ```bash
 # Windows
-make clean build-win
+make clean tidy build-win
 # Mac
-make clean build-mac
+make clean tidy build-mac
 # Linux
-make clean build-linux
+make clean tidy build-linux
 ```

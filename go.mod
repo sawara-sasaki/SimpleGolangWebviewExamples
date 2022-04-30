@@ -1,5 +1,5 @@
 module github.com/sawara-sasaki/GoWebViewExamples
 
-go 1.16
+go 1.18
 
-require github.com/webview/webview v0.0.0-20210216142346-e0bfdf0e5d90 // indirect
+require github.com/webview/webview v0.0.0-20220418180601-150aede5f486
